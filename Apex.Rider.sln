@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30803.129
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Apex.Rider", "Apex.Rider\Apex.Rider.csproj", "{C7BA7AF5-1350-4E00-9514-778D9FA06118}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C7BA7AF5-1350-4E00-9514-778D9FA06118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7BA7AF5-1350-4E00-9514-778D9FA06118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7BA7AF5-1350-4E00-9514-778D9FA06118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7BA7AF5-1350-4E00-9514-778D9FA06118}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {04BD712E-6E81-4DB1-A470-E3B6F5F51095}
+	EndGlobalSection
+EndGlobal

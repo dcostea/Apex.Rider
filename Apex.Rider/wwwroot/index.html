@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Apex Rider</title>
+    <link href="lib/bootstrap\css\bootstrap.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/site.css" />
+    <script src="lib/bootstrap\js\bootstrap.bundle.min.js"></script>
+    <!--<script src="lib/aspnet/signalr/dist/browser/signalr.js"></script>-->
+    <script src="lib/chartjs/chart.min.js"></script>
+    <script src="js/site.js" asp-append-version="true"></script>
+</head>
+<body class="bg-dark">
+    <div class="container-fluid body-content">
+        <div class="row">
+            <div class="col-12">
+                <div class="card text-center  bg-dark">
+                    <div class="card-header row">
+                        <div class="col-2 text-warning">
+                            <div class="btn-group">
+                                <button type="button" aria-readonly="true" id="crypto" class="btn btn-warning">BTC</button>
+                                <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="visually-hidden">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" id="crypto_currency">
+                                    <li><a class="dropdown-item" href="#">BTC</a></li>
+                                    <li><a class="dropdown-item" href="#">EGLD</a></li>
+                                    <li><a class="dropdown-item" href="#">ETH</a></li>
+                                    <li><a class="dropdown-item" href="#">ADA</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-1 text-warning">
+                            <!--<input type="text" class="form-control form-control-sm bg-dark text-warning" title="Balance" id="balance" value="1000" placeholder="balance" />-->
+                        </div>
+                        <div class="col-3 text-warning">
+                            <!--<h4>0.1 @ <span id="deci"></span> USDT</h4>-->
+                        </div>
+                        <div class="col-1 text-warning">
+                            <!--<input type="text" class="form-control form-control-sm bg-dark text-warning" title="Coins" id="coins" value="1" placeholder="coins" />-->
+                        </div>
+                        <div class="col-4 text-warning">
+                            <!--<h4>Predicted: <span id="predicted"></span> USDT</h4>-->
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h1 class="text-warning" style="font-family:Arial, Helvetica, sans-serif; font-weight:100; font-size: 200px;" id="latest"></h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="position: relative; height: 150px; width: 1000px;">
+        <canvas id="chart" class="bg-dark"></canvas>
+    </div>
+</body>
+</html>
