@@ -19,7 +19,7 @@
                     <div class="card-header row">
                         <div class="col-2 text-warning">
                             <div class="btn-group">
-                                <button type="button" aria-readonly="true" id="crypto" class="btn btn-warning">BTC</button>
+                                <button type="button" aria-readonly="true" id="crypto" class="btn btn-warning" style="font-size: 36px;">BTC</button>
                                 <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                                     <span class="visually-hidden">Toggle Dropdown</span>
                                 </button>
@@ -28,24 +28,29 @@
                                     <li><a class="dropdown-item" href="#">EGLD</a></li>
                                     <li><a class="dropdown-item" href="#">ETH</a></li>
                                     <li><a class="dropdown-item" href="#">ADA</a></li>
+                                    <li><a class="dropdown-item" href="#">DOT</a></li>
+                                    <li><a class="dropdown-item" href="#">LINK</a></li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-1 text-warning">
-                            <!--<input type="text" class="form-control form-control-sm bg-dark text-warning" title="Balance" id="balance" value="1000" placeholder="balance" />-->
+                        <div class="col-2 text-warning">
+                            <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Buy price" value="0" id="buy_price" />
                         </div>
-                        <div class="col-3 text-warning">
-                            <!--<h4>0.1 @ <span id="deci"></span> USDT</h4>-->
+                        <div class="col-2 text-warning">
+                            <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Sell price" value="0" id="sell_price" />
                         </div>
-                        <div class="col-1 text-warning">
-                            <!--<input type="text" class="form-control form-control-sm bg-dark text-warning" title="Coins" id="coins" value="1" placeholder="coins" />-->
+                        <div class="col-2 text-warning">
+                            <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Coins" value="0" id="coins" />
                         </div>
-                        <div class="col-4 text-warning">
-                            <!--<h4>Predicted: <span id="predicted"></span> USDT</h4>-->
+                        <div class="col-2 text-warning">
+                            <p style="font-size: 48px;" id="balance"></p>
+                        </div>
+                        <div class="col-2 text-warning">
+                            <p style="font-size: 48px; color: yellow;" id="profit"></p>
                         </div>
                     </div>
                     <div class="card-body">
-                        <h1 class="text-warning" style="font-family:Arial, Helvetica, sans-serif; font-weight:100; font-size: 200px;" id="latest"></h1>
+                        <h1 style="font-family:Arial, Helvetica, sans-serif; font-weight:100; font-size: 200px;" id="latest"></h1>
                     </div>
                 </div>
             </div>

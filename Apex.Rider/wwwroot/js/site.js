@@ -153,12 +153,29 @@ function GetTickerData() {
 
                 document.querySelector('#latest').innerHTML = trend + data.latestTradePrice.toFixed(precision);
 
-                //let coins = document.querySelector('#coins').value;
-                //let balance = document.querySelector('#balance').value;
-                //let deci = getDeci(data.latestTradePrice);
-                //let profit = getProfit(deci, fee, balance);
-                //document.querySelector('#deci').innerHTML = profit.toFixed(2);
-                //document.querySelector('#predicted').innerHTML = (coins * data.latestTradePrice).toFixed(2);
+                let fee = 1 - 0.0024;
+                let coins = parseFloat(document.querySelector('#coins').value);
+                let buy_price = parseFloat(document.querySelector('#buy_price').value);
+                let sell_price = parseFloat(document.querySelector('#sell_price').value);
+
+                let balance = coins * buy_price;
+                document.querySelector('#balance').innerHTML = balance.toFixed(0);
+
+                let profit = (data.latestTradePrice - buy_price) * coins * fee;
+                document.querySelector('#profit').innerHTML = profit.toFixed(0);
+
+                if (buy_price === 0 || coins === 0) {
+                    document.querySelector('#latest').style.color = "white";
+                } else {
+                    if (data.latestTradePrice < buy_price) {
+                        document.querySelector('#latest').style.color = "red";
+                    }
+                    else if (data.latestTradePrice > buy_price && data.latestTradePrice <= sell_price) {
+                        document.querySelector('#latest').style.color = "blue";
+                    } else {
+                        document.querySelector('#latest').style.color = "yellow";
+                    }
+                }
 
                 previous_price = data.latestTradePrice;
                 previous_trend = trend;

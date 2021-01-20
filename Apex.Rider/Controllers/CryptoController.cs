@@ -61,8 +61,9 @@ namespace Apex.Rider.Controllers
                 //Console.WriteLine(crypto);
                 //Log.Debug($"{crypto}: {result.LatestTradePrice.Value}");
 
-                var trend = result.LatestTradePrice < mins[crypto] ? "decreased"
-                    : result.LatestTradePrice > maxs[crypto] ? "increased" : "";
+                string trend;
+                trend = result.LatestTradePrice < mins[crypto] ? "decreased" : "";
+                trend = result.LatestTradePrice > maxs[crypto] ? "increased" : "";
 
                 mins[crypto] = result.LatestTradePrice < mins[crypto] ? result.LatestTradePrice.Value : mins[crypto];
                 maxs[crypto] = result.LatestTradePrice > maxs[crypto] ? result.LatestTradePrice.Value : maxs[crypto];

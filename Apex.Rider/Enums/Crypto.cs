@@ -5,6 +5,8 @@
         BTC,
         EGLD,
         ETH,
-        ADA
+        ADA,
+        DOT,
+        LINK
     }
 }
