@@ -61,17 +61,27 @@ namespace Apex.Rider.Controllers
                 //Console.WriteLine(crypto);
                 //Log.Debug($"{crypto}: {result.LatestTradePrice.Value}");
 
-                string trend;
-                trend = result.LatestTradePrice < mins[crypto] ? "decreased" : "";
-                trend = result.LatestTradePrice > maxs[crypto] ? "increased" : "";
-
-                mins[crypto] = result.LatestTradePrice < mins[crypto] ? result.LatestTradePrice.Value : mins[crypto];
-                maxs[crypto] = result.LatestTradePrice > maxs[crypto] ? result.LatestTradePrice.Value : maxs[crypto];
-
                 if (maxs[crypto] * (1 - _settings.PriceThreshold / 100F) > mins[crypto] && isActiveAlert)
                 {
                     sw.Stop();
-                    var opportunity = trend == "increased" ? "Selling" : "Buying";
+
+                    var trend = string.Empty;
+                    var opportunity = string.Empty;
+
+                    if (result.LatestTradePrice < mins[crypto])
+                    {
+                        trend = "decreased";
+                        opportunity = "Buying";
+                        mins[crypto] = result.LatestTradePrice.Value;
+                    }
+
+                    if (result.LatestTradePrice > maxs[crypto])
+                    {
+                        trend = "decreased";
+                        opportunity = "Selling";
+                        maxs[crypto] = result.LatestTradePrice.Value;
+                    }
+                    
                     var subject = $"{crypto} price {trend} with more than {_settings.PriceThreshold}% (sent at {DateTime.Now:hh:mm:ss})";
                     var body = $"{opportunity} opportunity!<br />{crypto} with current price {result.LatestTradePrice} {trend} between {mins[crypto]} and {maxs[crypto]} in the last {sw.ElapsedMilliseconds / 1000 / 60} minutes";
                     _emailClient.SendEmail(subject, body);

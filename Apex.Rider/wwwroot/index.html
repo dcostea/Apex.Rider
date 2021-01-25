@@ -1,64 +1,93 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <title>Apex Rider</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Apex Rider</title>
     <link href="lib/bootstrap\css\bootstrap.css" rel="stylesheet" />
     <link rel="stylesheet" href="css/site.css" />
     <script src="lib/bootstrap\js\bootstrap.bundle.min.js"></script>
-    <!--<script src="lib/aspnet/signalr/dist/browser/signalr.js"></script>-->
-    <script src="lib/chartjs/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@1.24.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@0.2.1"></script>
+    <script src="https://www.chartjs.org/chartjs-chart-financial/chartjs-chart-financial.js"></script>
     <script src="js/site.js" asp-append-version="true"></script>
 </head>
 <body class="bg-dark">
     <div class="container-fluid body-content">
-        <div class="row">
-            <div class="col-12">
-                <div class="card text-center  bg-dark">
-                    <div class="card-header row">
-                        <div class="col-2 text-warning">
-                            <div class="btn-group">
-                                <button type="button" aria-readonly="true" id="crypto" class="btn btn-warning" style="font-size: 36px;">BTC</button>
-                                <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <span class="visually-hidden">Toggle Dropdown</span>
-                                </button>
-                                <ul class="dropdown-menu" id="crypto_currency">
-                                    <li><a class="dropdown-item" href="#">BTC</a></li>
-                                    <li><a class="dropdown-item" href="#">EGLD</a></li>
-                                    <li><a class="dropdown-item" href="#">ETH</a></li>
-                                    <li><a class="dropdown-item" href="#">ADA</a></li>
-                                    <li><a class="dropdown-item" href="#">DOT</a></li>
-                                    <li><a class="dropdown-item" href="#">LINK</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-2 text-warning">
-                            <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Buy price" value="0" id="buy_price" />
-                        </div>
-                        <div class="col-2 text-warning">
-                            <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Sell price" value="0" id="sell_price" />
-                        </div>
-                        <div class="col-2 text-warning">
-                            <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Coins" value="0" id="coins" />
-                        </div>
-                        <div class="col-2 text-warning">
-                            <p style="font-size: 48px;" id="balance"></p>
-                        </div>
-                        <div class="col-2 text-warning">
-                            <p style="font-size: 48px; color: yellow;" id="profit"></p>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h1 style="font-family:Arial, Helvetica, sans-serif; font-weight:100; font-size: 200px;" id="latest"></h1>
-                    </div>
+        <div class="row mt-2">
+            <div class="col-2">
+                <div class="btn-group">
+                    <button type="button" aria-readonly="true" id="crypto" class="btn btn-warning" style="font-size: 36px;">BTC</button>
+                    <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" id="crypto_menu">
+                        <li><a class="dropdown-item" href="#">BTC</a></li>
+                        <li><a class="dropdown-item" href="#">ETH</a></li>
+                        <li><a class="dropdown-item" href="#">EGLD</a></li>
+                        <li><a class="dropdown-item" href="#">ADA</a></li>
+                        <li><a class="dropdown-item" href="#">DOT</a></li>
+                        <li><a class="dropdown-item" href="#">LINK</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-2">
+                <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Buy price" value="0" id="buy_price" />
+            </div>
+            <div class="col-2">
+                <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Sell price" value="0" id="sell_price" />
+            </div>
+            <div class="col-2">
+                <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Coins" value="0" id="coins" />
+            </div>
+            <div class="col-2 text-warning" style="text-align: right">
+                <p style="font-size: 48px;" id="balance"></p>
+            </div>
+            <div class="col-2" style="text-align: right">
+                <p style="font-size: 48px; color: yellow;" id="profit"></p>
+            </div>
+            <div class="col-12 text-center">
+                <p style="font-size: 200px; font-family: Arial, Helvetica, sans-serif" id="latest"></p>
+            </div>
+            <div class="col-12 text-center">
+                <div style="position: relative; height: 150px; width: 100%;">
+                    <canvas id="ticker_chart" class="bg-dark"></canvas>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div style="position: relative; height: 150px; width: 1000px;">
-        <canvas id="chart" class="bg-dark"></canvas>
+        <!--<div class="row mb-2">
+            <div style="position: relative; height: 250px; width: 1000px;">
+                <canvas id="candlestick_chart" class="bg-dark"></canvas>
+            </div>
+        </div>-->
+        <!--<div class="row">
+            <div class="col-2">
+                <div class="btn-group">
+                    <button type="button" aria-readonly="true" id="period" class="btn btn-warning" style="font-size: 16px;">5m</button>
+                    <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" id="period_menu">
+                        <li><a class="dropdown-item" href="#">1m</a></li>
+                        <li><a class="dropdown-item" href="#">5m</a></li>
+                        <li><a class="dropdown-item" href="#">15m</a></li>
+                        <li><a class="dropdown-item" href="#">30m</a></li>
+                        <li><a class="dropdown-item" href="#">1h</a></li>
+                        <li><a class="dropdown-item" href="#">4h</a></li>
+                        <li><a class="dropdown-item" href="#">6h</a></li>
+                        <li><a class="dropdown-item" href="#">12h</a></li>
+                        <li><a class="dropdown-item" href="#">1D</a></li>
+                        <li><a class="dropdown-item" href="#">7D</a></li>
+                        <li><a class="dropdown-item" href="#">14D</a></li>
+                        <li><a class="dropdown-item" href="#">41M</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-10">
+            </div>
+        </div>-->
     </div>
 </body>
 </html>
