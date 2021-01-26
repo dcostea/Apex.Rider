@@ -30,6 +30,7 @@ var candlestickEndpoint;
 document.addEventListener('DOMContentLoaded', (event) => {
 
     let coin = document.querySelector('#crypto').innerHTML;
+    document.querySelector('#crypto_url').href = `https://crypto.com/exchange/trade/spot/${coin}_USDT`;
     startWebsocket();
     tickerEndpoint = getTickerEndpoint(coin);
     connectTo(tickerEndpoint);
@@ -38,7 +39,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
         let coin = e.target.innerText;
         document.querySelector('#crypto').innerHTML = coin;
-
+        document.querySelector('#crypto_url').href = `https://crypto.com/exchange/trade/spot/${coin}_USDT`;
         document.querySelector("#balance").innerHTML = 0;
         document.querySelector("#profit").innerHTML = 0;
         document.querySelector("#buy_price").value = 0;
@@ -98,10 +99,10 @@ function createTickerChart() {
                     borderWidth: 2,
                     borderColor: "yellow",
                     lineTension: 0.5,
-                    pointRadius: 3,
+                    pointRadius: 4,
                     //color: "blue",
                     backgroundColor: "transparent",
-                    hoverRadius: 5
+                    hoverRadius: 7
                 }
             ]
         },
@@ -127,8 +128,8 @@ function createTickerChart() {
                 display: false
             },
             animation: {
-                duration: 50,
-                easing: 'linear'
+                duration: 100,
+                easing: 'easeInCubic'
             },
             scales: {
                 xAxes: [{
@@ -162,6 +163,7 @@ function createTickerChart() {
                 bodyFontSize: 48,
                 xPadding: 8,
                 yPadding: 8,
+                bodyFontColor: "orange",
                 cornerRadius: 2,
                 displayColors: false,
                 callbacks: {
@@ -266,7 +268,7 @@ function drawTickerChart(data) {
             ////tickerValues.pop();
             sum = 0;
             cnt = 0;
-        }, 2000);
+        }, 6250);
 
     } else {
 
