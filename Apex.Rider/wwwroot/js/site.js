@@ -1,5 +1,4 @@
-﻿// chartjs settings
-var tickerChart = null;
+﻿var tickerChart = null;
 var tickerValues = [];
 var tickerLabels = [];
 var tickerCharts = [];
@@ -49,6 +48,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
         document.querySelector("#coins").value = 0;
 
         tickerChart = null;
+        sum = 0;
+        cnt = 0;
         clearInterval(tickerInterval);
 
         startWebsocket();
@@ -81,6 +82,7 @@ function getTickerEndpoint(coin) {
 
 function createTickerChart() {
 
+    tickerChart = null;
     tickerValues = [];
     tickerLabels = [];
     tickerValues.length = 100;
@@ -90,7 +92,7 @@ function createTickerChart() {
 
     let ctx = document.querySelector("#ticker_chart").getContext('2d');
 
-    return new Chart(ctx, {
+    tickerChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: tickerLabels,
@@ -103,9 +105,8 @@ function createTickerChart() {
                     borderColor: "yellow",
                     lineTension: 0.5,
                     pointRadius: 4,
-                    //color: "blue",
-                    backgroundColor: "transparent",
-                    hoverRadius: 7
+                    hoverRadius: 7,
+                    backgroundColor: "transparent"
                 }
             ]
         },
@@ -184,114 +185,26 @@ function createTickerChart() {
     });
 }
 
-function createCandlestickChart() {
-
-    let speed = 300;
-
-    //candlestickValues.fill(16);
-    //candlestickLabels.fill("none");
-    let ctx = document.querySelector("#candlestick_chart").getContext('2d');
-
-    return new Chart(ctx,
-        {
-            type: 'candlestick',
-            data: {
-                labels: candlestickLabels,
-                datasets: [
-                    {
-                        label: "Price",
-                        data: candlestickValues,
-                        fill: false,
-                        borderWidth: 1,
-                        borderColors: {
-                            up: 'yellow',
-                            down: 'red',
-                            unchanged: 'green',
-                        },
-                        lineTension: 0.5,
-                        pointRadius: 0,
-                        hoverRadius: 3,
-                    }
-                ]
-            },
-            options: {
-                showLine: true,
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: {
-                    display: false
-                },
-                title: {
-                    display: false
-                },
-                animation: {
-                    duration: speed,
-                    easing: 'linear'
-                },
-                scales: {
-                    xAxes: [{
-                        gridLines: {
-                            display: true,
-                            drawOnChartArea: false,
-                            drawTicks: false,
-                        },
-                        ticks: {
-                            display: false,
-                        },
-                    }],
-                    yAxes: [{
-                        gridLines: {
-                            display: true,
-                            drawOnChartArea: false,
-                            drawTicks: true,
-                        },
-                        ticks: {
-                            display: true,
-                        },
-                    }],
-                }
-            }
-        });
-}
-
 function drawTickerChart(data) {
 
     if (tickerChart == null) {
-
-        previous_price = data.a;
-        tickerChart = createTickerChart();
-        tickerChart.update();
-
+        createTickerChart();
         tickerInterval = setInterval(() => {
             tickerValues.push(sum / cnt);
             tickerValues.shift();
-            //let dateTime = new Date(data.t);
-            //tickerLabels.push(dateTime.toLocaleTimeString());
-            //tickerLabels.shift();
+
+            let d = new Date(data.t);
+            tickerLabels.push(`Time: ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${d.getMilliseconds()}`);
+            tickerLabels.shift();
+
             tickerChart.update();
-            ////tickerValues.pop();
             sum = 0;
             cnt = 0;
         }, 6250);
 
     } else {
-
         sum += data.a;
         cnt++;
-    }
-}
-
-function drawCandlestickChart(data) {
-    if (candlestickChart == null) {
-        candlestickValues = data;
-        candlestickChart = createCandlestickChart();
-    } else {
-        //candlestickValues.push(data[0]);
-        //candlestickValues.shift();
-        ////let dateTime = new Date(data.t);
-        ////candlestickLabels.push(dateTime.toLocaleTimeString());
-        ////candlestickLabels.shift();
-        //candlestickChart.update();
     }
 }
 
@@ -335,7 +248,6 @@ function writePrices(data) {
         }
     }
 
-    previous_price = data.a;
     previous_trend = trend;
 }
 
@@ -365,6 +277,7 @@ function onMessage(evt) {
     if (data.method == "subscribe") {
         if (data.result != undefined) {
             if (data.result.subscription === tickerEndpoint) {
+                previous_price = parseFloat(data.result.data[0].a);
                 writePrices(data.result.data[0]);
                 drawTickerChart(data.result.data[0]);
             }
@@ -441,30 +354,3 @@ function sleep(milliseconds) {
         }
     }
 }
-
-//////function GetTickerData() {
-//////    let crypto = document.querySelector('#crypto').innerHTML;
-//////    var url = `/api/v2/crypto/price/${coin}`;
-
-//////    sleep(500);
-
-//////    fetch(url, {
-//////        method: 'GET',
-//////        mode: 'cors'
-//////    })
-//////        .then((response) => response.json())
-//////        .then(function (data) {
-//////            if (data !== undefined) {
-
-//////                writePrices(data);
-
-//////                GetTickerData();
-//////            }
-//////        })
-//////        .catch(function (err) {
-//////            console.log(err.message);
-//////            console.log('error reading api. retrying...');
-//////            sleep(500);
-//////            GetTickerData();
-//////        });
-//////}
