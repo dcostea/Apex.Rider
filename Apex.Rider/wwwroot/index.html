@@ -47,53 +47,57 @@
             <div class="col-2 pe-5" style="text-align: right">
                 <p style="font-size: 48px; color: yellow;" id="profit"></p>
             </div>
-            <div class="col-12 text-center">
-                <p style="font-size: 200px; font-family: Arial, Helvetica, sans-serif" id="latest"></p>
-            </div>
-            <div class="col-12 text-center">
-                <div class="ps-5 pe-5" style="position: relative; height: 150px; width: 100%;">
-                    <canvas id="ticker_chart" class="bg-dark"></canvas>
-                </div>
+        </div>
+
+        <div class="row text-center">
+            <p style="font-size: 200px; font-family: Arial, Helvetica, sans-serif; line-height:200px; margin: 0;" id="latest"></p>
+        </div>
+
+        <div class="row">
+            <div class="ps-5 pe-5" style="position: relative; height: 240px; width: 100%;">
+                <canvas id="ticker_chart" class="bg-dark"></canvas>
             </div>
         </div>
 
-        <div class="row m-2">
-            <div class="col-12 text-center">
-                <a href="#" class="btn btn-lg btn-outline-light" target="_blank" id="crypto_url" role="button">Go to Crypto.com...</a>
+        <div class="row mt-2 mb-2">
+            <div class="col-4 ps-5">
+                <a href="#" class="btn btn-lg btn-outline-light" style="font-size: 24px;" target="_blank" id="crypto_url" role="button">Go to Crypto.com...</a>
+            </div>
+            <div class="col-2">
+                <!--<div class="btn-group">
+            <button type="button" aria-readonly="true" id="period" class="btn btn-warning" style="font-size: 24px;">10m</button>
+            <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" id="period_menu">
+                <li><a class="dropdown-item" href="#">1m</a></li>
+                <li><a class="dropdown-item" href="#">5m</a></li>
+                <li><a class="dropdown-item" href="#">15m</a></li>
+                <li><a class="dropdown-item" href="#">30m</a></li>
+                <li><a class="dropdown-item" href="#">1h</a></li>
+                <li><a class="dropdown-item" href="#">4h</a></li>
+                <li><a class="dropdown-item" href="#">6h</a></li>
+                <li><a class="dropdown-item" href="#">12h</a></li>
+                <li><a class="dropdown-item" href="#">1D</a></li>
+                <li><a class="dropdown-item" href="#">7D</a></li>
+                <li><a class="dropdown-item" href="#">14D</a></li>
+                <li><a class="dropdown-item" href="#">41M</a></li>
+            </ul>
+        </div>-->
+            </div>
+            <div class="col-6 text-center">
             </div>
         </div>
 
         <!--<div class="row mb-2">
-            <div style="position: relative; height: 250px; width: 1000px;">
-                <canvas id="candlestick_chart" class="bg-dark"></canvas>
-            </div>
-        </div>-->
+        <div style="position: relative; height: 250px; width: 1000px;">
+            <canvas id="candlestick_chart" class="bg-dark"></canvas>
+        </div>
+    </div>-->
         <!--<div class="row">
-            <div class="col-2">
-                <div class="btn-group">
-                    <button type="button" aria-readonly="true" id="period" class="btn btn-warning" style="font-size: 16px;">5m</button>
-                    <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="visually-hidden">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" id="period_menu">
-                        <li><a class="dropdown-item" href="#">1m</a></li>
-                        <li><a class="dropdown-item" href="#">5m</a></li>
-                        <li><a class="dropdown-item" href="#">15m</a></li>
-                        <li><a class="dropdown-item" href="#">30m</a></li>
-                        <li><a class="dropdown-item" href="#">1h</a></li>
-                        <li><a class="dropdown-item" href="#">4h</a></li>
-                        <li><a class="dropdown-item" href="#">6h</a></li>
-                        <li><a class="dropdown-item" href="#">12h</a></li>
-                        <li><a class="dropdown-item" href="#">1D</a></li>
-                        <li><a class="dropdown-item" href="#">7D</a></li>
-                        <li><a class="dropdown-item" href="#">14D</a></li>
-                        <li><a class="dropdown-item" href="#">41M</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-10">
-            </div>
-        </div>-->
+        <div class="col-10">
+        </div>
+    </div>-->
     </div>
 </body>
 </html>

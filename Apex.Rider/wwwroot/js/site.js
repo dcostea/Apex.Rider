@@ -3,7 +3,6 @@ var tickerChart = null;
 var tickerValues = [];
 var tickerLabels = [];
 var tickerCharts = [];
-var tickerValue = 0;
 
 var candlestickChart = null;
 var candlestickValues = [];
@@ -26,11 +25,13 @@ var projection = 2; // percentage, sell price = buy price + 2%
 
 var tickerEndpoint;
 var candlestickEndpoint;
+var tickerInterval;
 
 document.addEventListener('DOMContentLoaded', (event) => {
 
     let coin = document.querySelector('#crypto').innerHTML;
     document.querySelector('#crypto_url').href = `https://crypto.com/exchange/trade/spot/${coin}_USDT`;
+    document.querySelector('#crypto_url').innerHTML = `${coin}_USDT market...`;
     startWebsocket();
     tickerEndpoint = getTickerEndpoint(coin);
     connectTo(tickerEndpoint);
@@ -40,13 +41,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
         let coin = e.target.innerText;
         document.querySelector('#crypto').innerHTML = coin;
         document.querySelector('#crypto_url').href = `https://crypto.com/exchange/trade/spot/${coin}_USDT`;
+        document.querySelector('#crypto_url').innerHTML = `${coin}_USDT market...`;
         document.querySelector("#balance").innerHTML = 0;
         document.querySelector("#profit").innerHTML = 0;
         document.querySelector("#buy_price").value = 0;
         document.querySelector("#sell_price").value = 0;
         document.querySelector("#coins").value = 0;
 
-        tickerValues.fill(0);
+        tickerChart = null;
+        clearInterval(tickerInterval);
 
         startWebsocket();
         tickerEndpoint = getTickerEndpoint(coin);
@@ -253,12 +256,13 @@ function createCandlestickChart() {
 
 function drawTickerChart(data) {
 
-    previous_price = data.a;
-
     if (tickerChart == null) {
-        tickerChart = createTickerChart();
 
-        setInterval(() => {
+        previous_price = data.a;
+        tickerChart = createTickerChart();
+        tickerChart.update();
+
+        tickerInterval = setInterval(() => {
             tickerValues.push(sum / cnt);
             tickerValues.shift();
             //let dateTime = new Date(data.t);
