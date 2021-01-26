@@ -170,7 +170,6 @@ function createTickerChart() {
                     //    return o.join(', ');
                     //},
                     label: function (t, d) {
-                        //return d.labels[t.index];
                         let price = parseFloat(t.value);
                         return `Price: ${price.toFixed(2)}`;
                     }
@@ -387,8 +386,22 @@ function respondHeartbeat(id) {
         "id": id,
         "method": "public/respond-heartbeat"
     };
-    websocket.send(JSON.stringify(message));
-    console.log(`HEARTBEAT: ${id}`);
+
+    switch (websocket.readyState) {
+        case 0:
+            console.log("CONNECTING. Socket has been created. The connection is not yet open.");
+            break;
+        case 1:
+            websocket.send(JSON.stringify(message));
+            console.log(`HEARTBEAT: ${id}`);
+            break;
+        case 2:
+            console.log("CLOSING. The connection is in the process of closing.");
+            break;
+        case 3:
+            console.log("CLOSED. The connection is closed or couldn't be opened.");
+            break;
+    }
 }
 
 function buildMessage(id, channels) {
