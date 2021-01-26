@@ -11,6 +11,9 @@ var candlestickLabels = [];
 var candlestickCharts = [];
 var candlestickValue = 0;
 
+var cnt = 0;
+var sum = 0;
+
 var wsUri = "wss://stream.crypto.com/v2/market";
 var websocket = {};
 var fee = 0.0024; // 0.00090 + 0.0015
@@ -74,12 +77,10 @@ function getTickerEndpoint(coin) {
 
 function createTickerChart() {
 
-    var speed = 100;
-
     tickerValues = [];
     tickerLabels = [];
-    tickerValues.length = 1000;
-    tickerLabels.length = 1000;
+    tickerValues.length = 100;
+    tickerLabels.length = 100;
     tickerValues.fill(previous_price);
     tickerLabels.fill("");
 
@@ -93,12 +94,14 @@ function createTickerChart() {
                 {
                     label: "Price",
                     data: tickerValues,
-                    fill: false,
-                    borderWidth: 1,
-                    borderColor: "red",
+                    fill: "start",
+                    borderWidth: 2,
+                    borderColor: "yellow",
                     lineTension: 0.5,
-                    pointRadius: 0,
-                    hoverRadius: 3
+                    pointRadius: 3,
+                    //color: "blue",
+                    backgroundColor: "transparent",
+                    hoverRadius: 5
                 }
             ]
         },
@@ -106,6 +109,17 @@ function createTickerChart() {
             showLine: true,
             responsive: true,
             maintainAspectRatio: false,
+            spanGaps: false,
+            elements: {
+                line: {
+                    tension: 0.3
+                }
+            },
+            plugins: {
+                filler: {
+                    propagate: false
+                }
+            },
             legend: {
                 display: false
             },
@@ -113,13 +127,13 @@ function createTickerChart() {
                 display: false
             },
             animation: {
-                duration: speed,
+                duration: 50,
                 easing: 'linear'
             },
             scales: {
                 xAxes: [{
                     gridLines: {
-                        display: true,
+                        display: false,
                         drawOnChartArea: false,
                         drawTicks: false,
                     },
@@ -129,15 +143,39 @@ function createTickerChart() {
                 }],
                 yAxes: [{
                     gridLines: {
-                        display: true,
+                        display: false,
                         drawOnChartArea: false,
-                        drawTicks: true,
+                        drawTicks: false,
                     },
                     ticks: {
-                        display: true,
+                        display: false,
                     },
                 }],
-            }
+            },
+            tooltips: {
+                intersect: false,
+                backgroundColor: "black",
+                titleFontSize: 48,
+                titleSpacing: 4,
+                titleMarginBottom: 4,
+                titleMargin: 4,
+                bodyFontSize: 48,
+                xPadding: 8,
+                yPadding: 8,
+                cornerRadius: 2,
+                displayColors: false,
+                callbacks: {
+                    //title: function (t, d) {
+                    //    const o = d.datasets.map((ds) => ds.data[t[0].index].toFixed(2))
+                    //    return o.join(', ');
+                    //},
+                    label: function (t, d) {
+                        //return d.labels[t.index];
+                        let price = parseFloat(t.value);
+                        return `Price: ${price.toFixed(2)}`;
+                    }
+                }
+            },
         }
     });
 }
@@ -218,13 +256,23 @@ function drawTickerChart(data) {
 
     if (tickerChart == null) {
         tickerChart = createTickerChart();
+
+        setInterval(() => {
+            tickerValues.push(sum / cnt);
+            tickerValues.shift();
+            //let dateTime = new Date(data.t);
+            //tickerLabels.push(dateTime.toLocaleTimeString());
+            //tickerLabels.shift();
+            tickerChart.update();
+            ////tickerValues.pop();
+            sum = 0;
+            cnt = 0;
+        }, 2000);
+
     } else {
-        tickerValues.push(data.a);
-        tickerValues.shift();
-        //let dateTime = new Date(data.t);
-        //tickerLabels.push(dateTime.toLocaleTimeString());
-        //tickerLabels.shift();
-        tickerChart.update();
+
+        sum += data.a;
+        cnt++;
     }
 }
 
