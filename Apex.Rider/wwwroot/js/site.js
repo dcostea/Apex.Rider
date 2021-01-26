@@ -400,6 +400,11 @@ function respondHeartbeat(id) {
             break;
         case 3:
             console.log("CLOSED. The connection is closed or couldn't be opened.");
+            console.log("RECONNECTING...");
+
+            startWebsocket();
+            connectTo(tickerEndpoint);
+
             break;
     }
 }
