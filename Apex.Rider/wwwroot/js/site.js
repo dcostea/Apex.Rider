@@ -22,6 +22,7 @@ var heartbeatId = 40751365019;
 var period;
 var candlestick;
 var projection = 2; // percentage, sell price = buy price + 2%
+var min_profit;
 
 var tickerEndpoint;
 var candlestickEndpoint;
@@ -30,6 +31,7 @@ var tickerInterval;
 document.addEventListener('DOMContentLoaded', (event) => {
 
     let coin = document.querySelector('#crypto').innerHTML;
+    min_profit = parseFloat(document.querySelector("#min_profit").value);
     document.querySelector('#crypto_url').href = `https://crypto.com/exchange/trade/spot/${coin}_USDT`;
     document.querySelector('#crypto_url').innerHTML = `${coin}_USDT market...`;
     startWebsocket();
@@ -71,8 +73,22 @@ document.addEventListener('DOMContentLoaded', (event) => {
         document.querySelector("#coins").select();
     };
     
+    document.querySelector("#min_profit").onfocus = function () {
+        document.querySelector("#min_profit").select();
+    };
+
     document.querySelector("#buy_price").onblur = function () {
-        document.querySelector("#sell_price").value = parseFloat(document.querySelector("#buy_price").value) * (1 + projection / 100);
+        let coins = parseFloat(document.querySelector("#coins").value);
+        let buy_price = parseFloat(document.querySelector("#buy_price").value);
+        let amount = buy_price * coins;
+        let fee = amount * buy_fee + (amount + min_profit) * sell_fee;
+        let sell_price = (amount + min_profit + fee) / coins;
+        let precision = sell_price <= 100 ? 2 : 0;
+        document.querySelector("#sell_price").value = sell_price.toFixed(precision);
+    };
+
+    document.querySelector("#min_profit").onblur = function () {
+        min_profit = parseFloat(document.querySelector("#min_profit").value);
     };
 });
 
@@ -243,7 +259,6 @@ function writePrices(data) {
 
     let coins = parseFloat(document.querySelector('#coins').value);
     let buy_price = parseFloat(document.querySelector('#buy_price').value);
-    let sell_price = parseFloat(document.querySelector('#sell_price').value);
 
     let balance = coins * buy_price;
     document.querySelector('#balance').innerHTML = balance.toFixed(0);
@@ -254,10 +269,10 @@ function writePrices(data) {
     if (buy_price === 0 || coins === 0) {
         document.querySelector('#latest').style.color = "white";
     } else {
-        if (data.a < buy_price) {
+        if (profit < 0) {
             document.querySelector('#latest').style.color = "red";
         }
-        else if (data.a > buy_price && data.a <= sell_price) {
+        else if (profit <= min_profit) {
             document.querySelector('#latest').style.color = "blue";
         } else {
             document.querySelector('#latest').style.color = "yellow";
