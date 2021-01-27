@@ -11,7 +11,7 @@ var candlestickValue = 0;
 
 var cnt = 0;
 var sum = 0;
-
+var timing = 6250; //ms
 var wsUri = "wss://stream.crypto.com/v2/market";
 var websocket = {};
 var fee = 0.0024; // 0.00090 + 0.0015
@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         document.querySelector("#sell_price").value = 0;
         document.querySelector("#coins").value = 0;
 
+        tickerChart.destroy();
         tickerChart = null;
         sum = 0;
         cnt = 0;
@@ -189,18 +190,21 @@ function drawTickerChart(data) {
 
     if (tickerChart == null) {
         createTickerChart();
+
+        clearInterval(tickerInterval);
+
         tickerInterval = setInterval(() => {
             tickerValues.push(sum / cnt);
             tickerValues.shift();
 
-            let d = new Date(data.t);
+            let d = new Date();
             tickerLabels.push(`Time: ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}.${d.getMilliseconds()}`);
             tickerLabels.shift();
 
             tickerChart.update();
             sum = 0;
             cnt = 0;
-        }, 6250);
+        }, timing);
 
     } else {
         sum += data.a;
