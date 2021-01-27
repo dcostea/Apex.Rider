@@ -14,7 +14,8 @@ var sum = 0;
 var timing = 6250; //ms
 var wsUri = "wss://stream.crypto.com/v2/market";
 var websocket = {};
-var fee = 0.0024; // 0.00090 + 0.0015
+var sell_fee = 0.0009;
+var buy_fee = 0.0015;
 var previous_trend = "&nbsp;&nbsp;";
 var previous_price = 0;
 var heartbeatId = 40751365019;
@@ -58,6 +59,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
         connectTo(tickerEndpoint);
     };
 
+    document.querySelector("#buy_price").onfocus = function () {
+        document.querySelector("#buy_price").select();
+    };
+
+    document.querySelector("#sell_price").onfocus = function () {
+        document.querySelector("#sell_price").select();
+    };
+
+    document.querySelector("#coins").onfocus = function () {
+        document.querySelector("#coins").select();
+    };
+    
     document.querySelector("#buy_price").onblur = function () {
         document.querySelector("#sell_price").value = parseFloat(document.querySelector("#buy_price").value) * (1 + projection / 100);
     };
@@ -228,7 +241,6 @@ function writePrices(data) {
 
     document.querySelector('#latest').innerHTML = trend + data.a.toFixed(precision);
 
-    let fee = 1 - 0.0024;
     let coins = parseFloat(document.querySelector('#coins').value);
     let buy_price = parseFloat(document.querySelector('#buy_price').value);
     let sell_price = parseFloat(document.querySelector('#sell_price').value);
@@ -236,7 +248,7 @@ function writePrices(data) {
     let balance = coins * buy_price;
     document.querySelector('#balance').innerHTML = balance.toFixed(0);
 
-    let profit = (data.a - buy_price) * coins * fee;
+    let profit = (data.a - buy_price - data.a * sell_fee - buy_price * buy_fee) * coins;
     document.querySelector('#profit').innerHTML = profit.toFixed(0);
 
     if (buy_price === 0 || coins === 0) {
@@ -298,6 +310,8 @@ function onOpen(evt) {
 
 function onClose(evt) {
     console.log("DISCONNECTED");
+    connectTo(tickerEndpoint);
+    console.log("RECONNECTED");
 }
 
 function onError(evt) {
