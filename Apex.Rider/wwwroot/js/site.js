@@ -19,7 +19,7 @@ var buy_fee = 0.0015;
 var previous_trend = "&nbsp;&nbsp;";
 var previous_price = 0;
 var heartbeatId = 40751365019;
-var period;
+var period = "10m";
 var candlestick;
 var projection = 2; // percentage, sell price = buy price + 2%
 var min_revenue;
@@ -50,6 +50,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         document.querySelector("#sell_price").value = 0;
         document.querySelector("#coins").value = 0;
 
+        // initialize ticker chart
         tickerChart.destroy();
         tickerChart = null;
         sum = 0;
@@ -59,6 +60,47 @@ document.addEventListener('DOMContentLoaded', (event) => {
         startWebsocket();
         tickerEndpoint = getTickerEndpoint(coin);
         connectTo(tickerEndpoint);
+    };
+
+    document.querySelector("#period_menu").onclick = function (e) {
+
+        period = e.target.innerText;
+
+        switch (period) {
+            case "5m":
+                timing = 3125;
+                break;
+            case "10m":
+                timing = 6250;
+                break;
+            case "30m":
+                timing = 12500;
+                break;
+            case "1h":
+                timing = 25000;
+                break;
+            case "4h":
+                timing = 100000;
+                break;
+            case "6h":
+                timing = 150000;
+                break;
+            case "12h":
+                timing = 300000;
+                break;
+            case "1d":
+                timing = 600000;
+                break;
+        }
+
+        document.querySelector('#period').innerHTML = period;
+
+        // initialize ticker chart
+        tickerChart.destroy();
+        tickerChart = null;
+        sum = 0;
+        cnt = 0;
+        clearInterval(tickerInterval);
     };
 
     document.querySelector("#buy_price").onfocus = function () {

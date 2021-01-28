@@ -18,7 +18,7 @@
         <div class="row mt-2">
             <div class="col-2 ps-5">
                 <div class="btn-group">
-                    <button type="button" aria-readonly="true" id="crypto" class="btn btn-warning" style="font-size: 36px;">BTC</button>
+                    <button type="button" aria-readonly="true" id="crypto" class="btn btn-warning" style="font-size: 48px;">BTC</button>
                     <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="visually-hidden">Toggle Dropdown</span>
                     </button>
@@ -64,20 +64,23 @@
                 <a href="#" class="text-warning d-block" style="font-size: 24px;" target="_blank" id="crypto_url" role="button">Go to Crypto.com...</a>
             </div>
             <div class="col-2">
-                <!--<div class="btn-group">
-            <button type="button" aria-readonly="true" id="period" class="btn btn-warning" style="font-size: 24px;">10m</button>
-            <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                <span class="visually-hidden">Toggle Dropdown</span>
-            </button>
-            <ul class="dropdown-menu" id="period_menu">
-                <li><a class="dropdown-item" href="#">1m</a></li>
-                <li><a class="dropdown-item" href="#">5m</a></li>
-                <li><a class="dropdown-item" href="#">15m</a></li>
-                <li><a class="dropdown-item" href="#">30m</a></li>
-                <li><a class="dropdown-item" href="#">1h</a></li>
-                <li><a class="dropdown-item" href="#">4h</a></li>
-            </ul>
-        </div>-->
+                <label class="text-warning">Timing range:</label>
+                <div class="btn-group">
+                    <button type="button" aria-readonly="true" id="period" class="btn btn-warning" style="font-size: 24px;">10m</button>
+                    <button type="button" class="btn btn-warning dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" id="period_menu">
+                        <li><a class="dropdown-item" href="#">5m</a></li>
+                        <li><a class="dropdown-item" href="#">10m</a></li>
+                        <li><a class="dropdown-item" href="#">30m</a></li>
+                        <li><a class="dropdown-item" href="#">1h</a></li>
+                        <li><a class="dropdown-item" href="#">4h</a></li>
+                        <li><a class="dropdown-item" href="#">6h</a></li>
+                        <li><a class="dropdown-item" href="#">12h</a></li>
+                        <li><a class="dropdown-item" href="#">1d</a></li>
+                    </ul>
+                </div>
             </div>
             <div class="col-2">
                 <label class="text-warning ps-2">Minimum revenue:</label>
@@ -89,7 +92,7 @@
             </div>
             <div class="col-2 pe-5" style="text-align: right">
                 <label class="text-warning ps-2">Projected revenue:</label>
-                <p class="" style="font-size: 36px;" id="revenue" title="Projected revenue"></p>
+                <p class="" style="font-size: 36px; font-weight: bold;" id="revenue" title="Projected revenue"></p>
             </div>
         </div>
 
