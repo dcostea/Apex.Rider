@@ -22,7 +22,7 @@ var heartbeatId = 40751365019;
 var period;
 var candlestick;
 var projection = 2; // percentage, sell price = buy price + 2%
-var min_profit;
+var min_revenue;
 
 var tickerEndpoint;
 var candlestickEndpoint;
@@ -31,9 +31,9 @@ var tickerInterval;
 document.addEventListener('DOMContentLoaded', (event) => {
 
     let coin = document.querySelector('#crypto').innerHTML;
-    min_profit = parseFloat(document.querySelector("#min_profit").value);
+    min_revenue = parseFloat(document.querySelector("#min_revenue").value);
     document.querySelector('#crypto_url').href = `https://crypto.com/exchange/trade/spot/${coin}_USDT`;
-    document.querySelector('#crypto_url').innerHTML = `${coin}_USDT market...`;
+    document.querySelector('#crypto_url').innerHTML = `Go to ${coin}_USDT market...`;
     startWebsocket();
     tickerEndpoint = getTickerEndpoint(coin);
     connectTo(tickerEndpoint);
@@ -43,9 +43,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         let coin = e.target.innerText;
         document.querySelector('#crypto').innerHTML = coin;
         document.querySelector('#crypto_url').href = `https://crypto.com/exchange/trade/spot/${coin}_USDT`;
-        document.querySelector('#crypto_url').innerHTML = `${coin}_USDT market...`;
+        document.querySelector('#crypto_url').innerHTML = `Go to ${coin}_USDT market...`;
         document.querySelector("#balance").innerHTML = 0;
-        document.querySelector("#profit").innerHTML = 0;
+        document.querySelector("#revenue").innerHTML = 0;
         document.querySelector("#buy_price").value = 0;
         document.querySelector("#sell_price").value = 0;
         document.querySelector("#coins").value = 0;
@@ -73,22 +73,22 @@ document.addEventListener('DOMContentLoaded', (event) => {
         document.querySelector("#coins").select();
     };
     
-    document.querySelector("#min_profit").onfocus = function () {
-        document.querySelector("#min_profit").select();
+    document.querySelector("#min_revenue").onfocus = function () {
+        document.querySelector("#min_revenue").select();
     };
 
     document.querySelector("#buy_price").onblur = function () {
         let coins = parseFloat(document.querySelector("#coins").value);
         let buy_price = parseFloat(document.querySelector("#buy_price").value);
         let amount = buy_price * coins;
-        let fee = amount * buy_fee + (amount + min_profit) * sell_fee;
-        let sell_price = (amount + min_profit + fee) / coins;
+        let fee = amount * buy_fee + (amount + min_revenue) * sell_fee;
+        let sell_price = (amount + min_revenue + fee) / coins;
         let precision = sell_price <= 100 ? 2 : 0;
         document.querySelector("#sell_price").value = sell_price.toFixed(precision);
     };
 
-    document.querySelector("#min_profit").onblur = function () {
-        min_profit = parseFloat(document.querySelector("#min_profit").value);
+    document.querySelector("#min_revenue").onblur = function () {
+        min_revenue = parseFloat(document.querySelector("#min_revenue").value);
     };
 });
 
@@ -147,7 +147,7 @@ function createTickerChart() {
             spanGaps: false,
             elements: {
                 line: {
-                    tension: 0.3
+                    tension: 0.2
                 }
             },
             plugins: {
@@ -168,9 +168,9 @@ function createTickerChart() {
             scales: {
                 xAxes: [{
                     gridLines: {
-                        display: false,
-                        drawOnChartArea: false,
-                        drawTicks: false,
+                        display: true,
+                        //drawOnChartArea: true,
+                        drawTicks: true,
                     },
                     ticks: {
                         display: false,
@@ -178,9 +178,9 @@ function createTickerChart() {
                 }],
                 yAxes: [{
                     gridLines: {
-                        display: false,
-                        drawOnChartArea: false,
-                        drawTicks: false,
+                        display: true,
+                        //drawOnChartArea: true,
+                        drawTicks: true,
                     },
                     ticks: {
                         display: false,
@@ -189,7 +189,7 @@ function createTickerChart() {
             },
             tooltips: {
                 intersect: false,
-                backgroundColor: "black",
+                backgroundColor: "rgba(0,0,0,0.5)",
                 titleFontSize: 48,
                 titleSpacing: 4,
                 titleMarginBottom: 4,
@@ -263,22 +263,26 @@ function writePrices(data) {
     let balance = coins * buy_price;
     document.querySelector('#balance').innerHTML = balance.toFixed(0);
 
-    let profit = (data.a - buy_price - data.a * sell_fee - buy_price * buy_fee) * coins;
-    document.querySelector('#profit').innerHTML = profit.toFixed(0);
+    let revenue = (data.a - buy_price - data.a * sell_fee - buy_price * buy_fee) * coins;
+    document.querySelector('#revenue').innerHTML = revenue.toFixed(0);
 
     if (buy_price === 0 || coins === 0) {
         document.querySelector('#latest').style.color = "white";
     } else {
-        if (profit < 0) {
+        if (revenue < 0) {
             document.querySelector('#latest').style.color = "red";
+            document.querySelector('#revenue').style.color = "red";
         }
-        else if (profit <= min_profit) {
+        else if (revenue <= min_revenue) {
             document.querySelector('#latest').style.color = "blue";
+            document.querySelector('#revenue').style.color = "blue";
         } else {
             document.querySelector('#latest').style.color = "yellow";
+            document.querySelector('#revenue').style.color = "yellow";
         }
     }
 
+    previous_price = parseFloat(data.a);
     previous_trend = trend;
 }
 
@@ -308,7 +312,6 @@ function onMessage(evt) {
     if (data.method == "subscribe") {
         if (data.result != undefined) {
             if (data.result.subscription === tickerEndpoint) {
-                previous_price = parseFloat(data.result.data[0].a);
                 writePrices(data.result.data[0]);
                 drawTickerChart(data.result.data[0]);
             }

@@ -32,20 +32,19 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-2">
-                <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Coins" value="0" id="coins" />
+            <div class="col-4">
             </div>
             <div class="col-2">
-                <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Buy price" value="0" id="buy_price" />
+                <label class="text-warning ps-2">Coins:</label>
+                <input type="text" class="form-control bg-dark text-warning" style="font-size: 24px;" title="Coins" value="0" id="coins" />
             </div>
             <div class="col-2">
-                <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Sell price" value="0" id="sell_price" />
+                <label class="text-warning ps-2">Buy price:</label>
+                <input type="text" class="form-control bg-dark text-warning" style="font-size: 24px;" title="Buy price" value="0" id="buy_price" />
             </div>
-            <div class="col-2 text-warning" style="text-align: right">
-                <p style="font-size: 48px;" id="balance"></p>
-            </div>
-            <div class="col-2 pe-5" style="text-align: right">
-                <p style="font-size: 48px; color: yellow;" id="profit"></p>
+            <div class="col-2 text-warning ps-2 pe-5" style="text-align: right">
+                <label class="text-warning">Balance:</label>
+                <p style="font-size: 36px;" id="balance" title="Balance"></p>
             </div>
         </div>
 
@@ -61,13 +60,9 @@
 
         <div class="row mt-2 mb-2">
             <div class="col-4 ps-5">
-                <a href="#" class="btn btn-lg btn-outline-light" style="font-size: 24px;" target="_blank" id="crypto_url" role="button">Go to Crypto.com...</a>
+                <br />
+                <a href="#" class="text-warning d-block" style="font-size: 24px;" target="_blank" id="crypto_url" role="button">Go to Crypto.com...</a>
             </div>
-
-            <div class="col-2">
-                <input type="text" class="form-control bg-dark text-warning" style="font-size: 36px;" title="Minimum profit" value="100" id="min_profit" />
-            </div>
-
             <div class="col-2">
                 <!--<div class="btn-group">
             <button type="button" aria-readonly="true" id="period" class="btn btn-warning" style="font-size: 24px;">10m</button>
@@ -81,28 +76,32 @@
                 <li><a class="dropdown-item" href="#">30m</a></li>
                 <li><a class="dropdown-item" href="#">1h</a></li>
                 <li><a class="dropdown-item" href="#">4h</a></li>
-                <li><a class="dropdown-item" href="#">6h</a></li>
-                <li><a class="dropdown-item" href="#">12h</a></li>
-                <li><a class="dropdown-item" href="#">1D</a></li>
-                <li><a class="dropdown-item" href="#">7D</a></li>
-                <li><a class="dropdown-item" href="#">14D</a></li>
-                <li><a class="dropdown-item" href="#">41M</a></li>
             </ul>
         </div>-->
             </div>
-            <div class="col-6 text-center">
+            <div class="col-2">
+                <label class="text-warning ps-2">Minimum revenue:</label>
+                <input type="text" class="form-control bg-dark text-warning" style="font-size: 24px;" title="Minimum revenue" value="100" id="min_revenue" />
+            </div>
+            <div class="col-2">
+                <label class="text-warning ps-2">Projected sell price:</label>
+                <input type="text" class="form-control bg-dark text-warning" style="font-size: 24px;" title="Projected sell price" value="0" id="sell_price" />
+            </div>
+            <div class="col-2 pe-5" style="text-align: right">
+                <label class="text-warning ps-2">Projected revenue:</label>
+                <p class="" style="font-size: 36px;" id="revenue" title="Projected revenue"></p>
             </div>
         </div>
 
         <!--<div class="row mb-2">
-        <div style="position: relative; height: 250px; width: 1000px;">
-            <canvas id="candlestick_chart" class="bg-dark"></canvas>
-        </div>
-    </div>-->
+            <div style="position: relative; height: 250px; width: 1000px;">
+                <canvas id="candlestick_chart" class="bg-dark"></canvas>
+            </div>
+        </div>-->
         <!--<div class="row">
-        <div class="col-10">
-        </div>
-    </div>-->
+            <div class="col-10">
+            </div>
+        </div>-->
     </div>
 </body>
 </html>
